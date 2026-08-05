@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.6'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+def beamVersion = '2.62.0'
+
+dependencies {
+    implementation "org.apache.beam:beam-sdks-java-core:${beamVersion}"
+    implementation "org.apache.beam:beam-sdks-java-io-google-cloud-platform:${beamVersion}"
+    implementation "org.apache.beam:beam-runners-google-cloud-dataflow-java:${beamVersion}"
+    implementation "org.apache.beam:beam-runners-direct-java:${beamVersion}"
+
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.hamcrest:hamcrest:2.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.2"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.10.2"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    zip64 = true
+    mergeServiceFiles()
+    archiveClassifier.set('')
+    manifest {
+        attributes 'Main-Class': 'com.example.beam.LoremIpsumWordCountPipeline'
+    }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Lorem Ipsum Word Count Pipeline",
+  "description": "Apache Beam pipeline that counts words by initial letter and writes YAML results to GCS.",
+  "parameters": [
+    {
+      "name": "outputBucket",
+      "label": "Output GCS Bucket",
+      "helpText": "Destination GCS bucket or prefix path (e.g., gs://my-bucket)",
+      "paramType": "TEXT",
+      "isOptional": false
+    }
+  ]
+}
