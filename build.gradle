@@ -13,7 +13,7 @@ java {
     }
 }
 
-def beamVersion = '2.62.0'
+def beamVersion = '2.75.0'
 
 dependencies {
     implementation "org.apache.beam:beam-sdks-java-core:${beamVersion}"
