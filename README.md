@@ -84,5 +84,5 @@ gcloud dataflow flex-template run "lorem-ipsum-word-count-$(date +%s)" \
   --template-file-gcs-location "${TEMPLATE_PATH}" \
   --region "${REGION}" \
   --parameters outputBucket="gs://YOUR_GCS_BUCKET"
-``` 
+```  
  
