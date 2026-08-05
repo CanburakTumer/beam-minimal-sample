@@ -92,6 +92,6 @@ public class LoremIpsumWordCountPipeline {
                         .withNumShards(1)
                 );
 
-        pipeline.run().waitUntilFinish();
+        pipeline.run();
     }
 }
