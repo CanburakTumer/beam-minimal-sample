@@ -69,13 +69,22 @@ public class LoremIpsumWordCountPipeline {
                 .apply("CreateInput", Create.of(LOREM_IPSUM_PARAGRAPHS))
                 .apply("CountLetters", new CountLettersTransform())
                 .apply("CollectAndSort", Combine.globally(new CollectAndSortCombineFn()))
-                .apply("FormatYaml", ParDo.of(new DoFn<List<KV<String, Long>>, String>() {
+                .apply("FormatJson", ParDo.of(new DoFn<List<KV<String, Long>>, String>() {
                     @ProcessElement
                     public void processElement(@Element List<KV<String, Long>> sortedList, OutputReceiver<String> out) {
-                        if (sortedList != null) {
-                            for (KV<String, Long> kv : sortedList) {
-                                out.output(kv.getKey() + ": " + kv.getValue());
+                        if (sortedList != null && !sortedList.isEmpty()) {
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("{\n");
+                            for (int i = 0; i < sortedList.size(); i++) {
+                                KV<String, Long> kv = sortedList.get(i);
+                                sb.append("  \"").append(kv.getKey()).append("\": ").append(kv.getValue());
+                                if (i < sortedList.size() - 1) {
+                                    sb.append(",");
+                                }
+                                sb.append("\n");
                             }
+                            sb.append("}");
+                            out.output(sb.toString());
                         }
                     }
                 }))
@@ -87,7 +96,7 @@ public class LoremIpsumWordCountPipeline {
                             ZonedDateTime zdt = now.atZone(ZoneId.of("UTC"));
                             String datePath = zdt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
                             String timeFileName = zdt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-                            return datePath + "/" + timeFileName + ".yaml";
+                            return datePath + "/" + timeFileName + ".json";
                         })
                         .withNumShards(1)
                 );

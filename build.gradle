@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
     id 'com.gradleup.shadow' version '8.3.6'
 }
 
@@ -11,6 +12,14 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+application {
+    mainClass = 'com.example.beam.LoremIpsumWordCountPipeline'
+}
+
+tasks.named('startShadowScripts').configure {
+    enabled = false
 }
 
 def beamVersion = '2.75.0'
@@ -31,6 +40,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
 }
 
 shadowJar {

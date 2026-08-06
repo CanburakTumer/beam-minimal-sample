@@ -1,6 +1,6 @@
 {
   "name": "Lorem Ipsum Word Count Pipeline",
-  "description": "Apache Beam pipeline that counts words by initial letter and writes YAML results to GCS.",
+  "description": "Apache Beam pipeline that counts words by initial letter and writes JSON results to GCS.",
   "parameters": [
     {
       "name": "outputBucket",
